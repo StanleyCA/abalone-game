@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Abalone (JS)</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Abalone</h1>
+      <div class="status">
+        <span id="turn">Turn: -</span>
+        <span id="score">W 0 — 0 B</span>
+        <button id="resetBtn" class="btn">Reset</button>
+      </div>
+    </header>
+    <main>
+      <div id="board-container">
+        <!-- SVG board is injected here -->
+      </div>
+      <div class="controls">
+        <div class="dir-buttons">
+          <button data-dir="E" class="btn dir">E</button>
+          <button data-dir="NE" class="btn dir">NE</button>
+          <button data-dir="NW" class="btn dir">NW</button>
+          <button data-dir="W" class="btn dir">W</button>
+          <button data-dir="SW" class="btn dir">SW</button>
+          <button data-dir="SE" class="btn dir">SE</button>
+        </div>
+        <div id="message" class="message"></div>
+      </div>
+    </main>
+
+    <script type="module" src="src/ui.js"></script>
+  </body>
+  </html>
+

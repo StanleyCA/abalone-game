@@ -1,0 +1,12 @@
+{
+  "name": "abalone",
+  "version": "1.0.0",
+  "description": "A minimal browser-based implementation of the Abalone board game. Click marbles to select up to 3 in a line, then drag in a direction or use the direction buttons to move. Inline moves can push opponent marbles if you have more in your line than the contiguous opponents ahead. First to eject 6 opponent marbles wins.",
+  "main": "index.html",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
