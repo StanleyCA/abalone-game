@@ -1,4 +1,5 @@
 import { initialState, allCells, key, getAt, setAt, DIRS, DIR_INDEX, canMove, applyMove, hasWinner, inBoard } from './abalone.js';
+import { chooseMove } from './ai.js';
 import { startConfetti, stopConfetti, isConfettiActive } from './confetti.js';
 
 const size = 32; // hex radius in px
@@ -30,6 +31,7 @@ const ui = {
   drag: { active: false, startX: 0, startY: 0, startCell: null, pointerId: null, hintedDir: null, didDrag: false },
   confettiStarted: false,
   animating: false,
+  ai: { side: 'B', enabled: false, depth: 2, thinking: false },
 };
 
 function centerAndScale(cells) {
@@ -142,6 +144,9 @@ function renderState() {
       stopConfetti();
     }
   }
+
+  // If it's AI's turn, let it think and move
+  maybeAIMove();
 }
 
 function onCellClick(cell) {
@@ -471,6 +476,50 @@ function setupControls() {
     renderState();
     if (ui.confettiStarted) { ui.confettiStarted = false; stopConfetti(); }
   });
+
+  const aiSideEl = document.getElementById('aiSide');
+  if (aiSideEl) {
+    // Initialize from current value
+    if (aiSideEl.value && aiSideEl.value !== 'off') { ui.ai.enabled = true; ui.ai.side = aiSideEl.value; }
+    aiSideEl.addEventListener('change', () => {
+      const v = aiSideEl.value;
+      if (v === 'off') { ui.ai.enabled = false; }
+      else { ui.ai.enabled = true; ui.ai.side = v; }
+      maybeAIMove();
+    });
+  }
+}
+
+function maybeAIMove() {
+  if (!ui.ai.enabled) return;
+  if (ui.animating || ui.ai.thinking) return;
+  const turn = ui.state.turn;
+  const aiPlaysThisTurn = ui.ai.side === 'both' || turn === ui.ai.side;
+  if (!aiPlaysThisTurn) return;
+  // Delay slightly to let UI update and avoid tight loops
+  ui.ai.thinking = true;
+  setTimeout(() => {
+    try {
+      const best = chooseMove(ui.state, { depth: ui.ai.depth });
+      const move = best.move;
+      if (!move) { ui.ai.thinking = false; return; }
+      const res = applyMove(ui.state, move.selection, move.dir);
+      if (!res.ok) { ui.ai.thinking = false; return; }
+      runAnimatedMove(move.dir, ui.state, res.next).then(() => {
+        ui.state = res.next;
+        ui.selection = [];
+        ui.ai.thinking = false;
+        renderState();
+      }).catch(() => {
+        ui.state = res.next;
+        ui.selection = [];
+        ui.ai.thinking = false;
+        renderState();
+      });
+    } catch (e) {
+      ui.ai.thinking = false;
+    }
+  }, 200);
 }
 
 // Startup

@@ -28,6 +28,15 @@
           <button data-dir="SW" class="btn dir">SW</button>
           <button data-dir="SE" class="btn dir">SE</button>
         </div>
+        <div class="ai-controls">
+          <label for="aiSide">AI:</label>
+          <select id="aiSide" class="btn">
+            <option value="off">Off</option>
+            <option value="W">Play as White</option>
+            <option value="B" selected>Play as Black</option>
+            <option value="both">Play both sides</option>
+          </select>
+        </div>
         <div id="message" class="message"></div>
       </div>
     </main>
@@ -35,4 +44,3 @@
     <script type="module" src="src/ui.js"></script>
   </body>
   </html>
-

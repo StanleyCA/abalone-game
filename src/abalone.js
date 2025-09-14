@@ -65,15 +65,15 @@ export function initialState(radius = 4) {
   const state = { radius, turn: 'W', board: new Map(), captured: { W: 0, B: 0 } };
   const cells = allCells(radius);
   // Place initial marbles (classic):
-  // Top (White): r = -4 row full, r = -3 full, r = -2 center 3 (q in [0,1,2])
-  // Bottom (Black): r = +4 full, r = +3 full, r = +2 center 3 (q in [-2,-1,0])
+  // Top (Black): r = -4 row full, r = -3 full, r = -2 center 3 (q in [0,1,2])
+  // Bottom (White): r = +4 full, r = +3 full, r = +2 center 3 (q in [-2,-1,0])
   for (const { q, r } of cells) {
-    if (r === -radius) state.board.set(key(q, r), 'W');
-    else if (r === -radius + 1) state.board.set(key(q, r), 'W');
-    else if (r === -radius + 2 && [0, 1, 2].includes(q)) state.board.set(key(q, r), 'W');
-    else if (r === radius) state.board.set(key(q, r), 'B');
-    else if (r === radius - 1) state.board.set(key(q, r), 'B');
-    else if (r === radius - 2 && [-2, -1, 0].includes(q)) state.board.set(key(q, r), 'B');
+    if (r === -radius) state.board.set(key(q, r), 'B');
+    else if (r === -radius + 1) state.board.set(key(q, r), 'B');
+    else if (r === -radius + 2 && [0, 1, 2].includes(q)) state.board.set(key(q, r), 'B');
+    else if (r === radius) state.board.set(key(q, r), 'W');
+    else if (r === radius - 1) state.board.set(key(q, r), 'W');
+    else if (r === radius - 2 && [-2, -1, 0].includes(q)) state.board.set(key(q, r), 'W');
   }
   return state;
 }
